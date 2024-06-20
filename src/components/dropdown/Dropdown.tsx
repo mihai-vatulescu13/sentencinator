@@ -2,15 +2,23 @@ import { useState } from "react";
 import "./Dropdown.css";
 import { DropdownOption } from "../play-mode/play-mode.config";
 
-export default function Dropdown(props: any) {
+export default function Dropdown({
+  options,
+  sendOptionToParent,
+}: {
+  options: DropdownOption[];
+  sendOptionToParent: any;
+}) {
   const [openMenu, setOpenMenu] = useState(false);
-  const dropdownOptions = props.options.map(
+  const dropdownOptions = options.map(
     (option: DropdownOption, index: number) => {
       return (
         <li
           onClick={(e: any) => onSelectOption(e, option)}
           key={index}
-          className={"item" + (option.id === index + 1 ? "selected-option" : "")}
+          className={
+            "item" + (option.id === index + 1 ? "selected-option" : "")
+          }
           value={option.value}
         >
           {option.label}
@@ -18,11 +26,10 @@ export default function Dropdown(props: any) {
       );
     }
   );
-  const [selectedOption, setSelectedOption] = useState({});
 
   const onSelectOption = (e: any, option: DropdownOption) => {
     e.stopPropagation();
-    setSelectedOption(option);
+    sendOptionToParent(option);
   };
 
   const onOpenCloseMenu = () => {
